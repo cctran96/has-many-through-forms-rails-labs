@@ -1,1 +1,28 @@
+<h1><%= @post.title %></h1>
+<h5><%= @post.content %></h5>
+<p>Categories: <%= @post.categories.map{|c| c.name}.join(' ') %></p>
+<ul>
+    <% @post.comments.each do |c| %>
+        <li><%= c.user.username %> says: <%= c.content %></li>
+    <% end %>
+</ul>
 
+Commenters:
+<ul>
+    <% @post.users.uniq.each do |u| %>
+        <li><%= link_to u.username, u %></li>
+    <% end %>
+</ul>
+
+New Comment:
+<%= form_for @post.comments.build do |f| %>
+    <%= f.hidden_field :post_id %>
+    <%= f.collection_select :user_id, User.all, :id, :username %>
+    <%= f.fields_for :user, User.new do |u| %>
+        <%= u.label :username %>
+        <%= u.text_field :username %>
+    <% end %>
+    <%= f.label :content, "New Comment" %>
+    <%= f.text_area :content%><br>
+    <%= f.submit %>
+<% end %>

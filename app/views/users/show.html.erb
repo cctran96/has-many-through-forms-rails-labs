@@ -1,1 +1,5 @@
-
+<h1><%= @user.username %></h1>
+<h3>Comments: </h3>
+<% @user.posts.each do |p| %>
+    <o><%= link_to p.title, p %></o>
+<% end %>
